@@ -3,6 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const mongoose = require('mongoose')
 require('dotenv').config();
 
 const apiRoutes = require('./routes/api.js');
@@ -38,8 +39,10 @@ app.use(function(req, res, next) {
 });
 
 //Start our server and tests!
-const listener = app.listen(process.env.PORT || 3000, function() {
+const listener = app.listen(process.env.PORT || 3000,async function() {
 	console.log('Your app is listening on port ' + listener.address().port);
+ const db = await mongoose.connect(process.env.MONGO_URI)
+  db && console.log("MongoDb connected!")
 	if (process.env.NODE_ENV === 'test') {
 		console.log('Running Tests...');
 		setTimeout(function() {
